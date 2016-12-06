@@ -1,0 +1,254 @@
+<html>
+
+  <head>
+    <title>LSVAST Video in Displayer 0.3.3 - 12-5-2016</title>
+	<!-- Working proto -->
+  </head>
+
+  <style>
+    #mainContainer {
+      position: relative;
+      width: 300px;
+      height: 250px;
+      cursor: none;
+    }
+
+    #content,
+    #adContainer {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 300px;
+      height: 250px;
+    }
+
+    #contentElement {
+      width: 300px;
+      height: 250px;
+      overflow: hidden;
+    }
+
+  </style>
+
+  <body>
+    <div id="mainContainer" onmouseover="mouseOverPlayer(this)" onmouseout="mouseOffPlayer(this)">
+      <div id="content">
+        <video id="contentElement">
+        </video>
+      </div>
+      <div id="adContainer"></div>
+    </div>
+    <!-- Include GPT and IMA3 javascript files -->
+    <script type='text/javascript' src='//www.googletagservices.com/tag/js/gpt.js'></script>
+    <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script type="text/javascript">
+      // Site to Ad unit Mapping
+
+      var siteAdUnits = [{
+        site: 'www.w3schools.com',
+        networkType: 'display',
+        adUnit: '/6355419/travel'
+      }, {
+        site: 'www.w3schools.com',
+        networkType: 'VAST',
+        adUnit: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ct%3Dskippablelinear&correlator=[timestamp]'
+      }];
+
+      function determineAdUnit(type) {
+        for (var i = 0; i < siteAdUnits.length; i++) {
+          if (siteAdUnits[i].site === window.location.hostname && siteAdUnits[i].networkType === type) {
+            return siteAdUnits[i].adUnit
+            console.log(siteAdUnits[i].adUnit)
+          }
+        }
+      };
+
+
+      // VAST Request
+      var videoRequestAdx = determineAdUnit("VAST");
+      var videoRequestStartVolume = 0;
+      var videoRequestHoverVolume = 0.5;
+
+      // In-Banner Video Ad Container Sizes
+      var videoInBannerContainerWidth = 300;
+      var videoInBannerContainerHeight = 250;
+
+      // Video Ad Sizes
+      var videoRequestlinearAdSlotWidth = 640;
+      var videoRequestlinearAdSlotHeight = 400;
+
+
+      // Fallback Display Ad GPT Sync Passback request
+
+      function displayFallbackAd() {
+        // Basic Data
+        path = determineAdUnit("display");
+        width = 300;
+        height = 250;
+        // GPT Render on page
+        googletag.pubads().definePassback(path, [
+          [width, height]
+        ]).setTargeting("test","responsive").display();
+      }
+
+      // Logging Messages
+      var videoLogLoaded = 'Video Ad Loaded.';
+      var videoLogPlaying = 'Video Ad Playing.';
+      var videoLogCompleted = 'Video Ad Completed, rendering fallback display ad.';
+      var videoLogSkipped = 'Video Ad Skipped, rendering fallback display ad';
+      var videoLogErrorFallback = 'Video contained any error, rendering fallback display ad';
+
+      // IMA3 SDK Vars
+      var adsManager;
+      var adsLoader;
+      var adDisplayContainer;
+      var intervalTimer;
+      var playButton;
+      var videoContent;
+
+      function init() {
+        videoContent = document.getElementById('contentElement');
+      }
+
+      function createAdDisplayContainer() {
+        adDisplayContainer =
+          new google.ima.AdDisplayContainer(
+            document.getElementById('adContainer'), videoContent);
+      }
+
+      function requestAds() {
+        createAdDisplayContainer();
+        adDisplayContainer.initialize();
+        videoContent.load();
+        adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+        adsLoader.addEventListener(
+          google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
+          onAdsManagerLoaded,
+          false);
+        adsLoader.addEventListener(
+          google.ima.AdErrorEvent.Type.AD_ERROR,
+          onAdError,
+          false);
+
+        var adsRequest = new google.ima.AdsRequest();
+        adsRequest.adTagUrl = videoRequestAdx;
+
+        adsRequest.linearAdSlotWidth = videoRequestlinearAdSlotWidth;
+        adsRequest.linearAdSlotHeight = videoRequestlinearAdSlotHeight;
+
+        // Non Linear Ads not used, left as default.
+        adsRequest.nonLinearAdSlotWidth = 640;
+        adsRequest.nonLinearAdSlotHeight = 150;
+
+        adsLoader.requestAds(adsRequest);
+      }
+
+      function onAdsManagerLoaded(adsManagerLoadedEvent) {
+        var adsRenderingSettings = new google.ima.AdsRenderingSettings();
+        adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
+        adsManager = adsManagerLoadedEvent.getAdsManager(
+          videoContent, adsRenderingSettings);
+
+        adsManager.addEventListener(
+          google.ima.AdErrorEvent.Type.AD_ERROR,
+          onAdError);
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED,
+          onContentPauseRequested);
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED,
+          onContentResumeRequested);
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.ALL_ADS_COMPLETED,
+          onAdEvent);
+
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.LOADED,
+          onAdEvent);
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.STARTED,
+          onAdEvent);
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.COMPLETE,
+          onAdEvent);
+        adsManager.addEventListener(
+          google.ima.AdEvent.Type.SKIPPED,
+          onAdEvent);
+
+        try {
+          adsManager.init(videoInBannerContainerWidth, videoInBannerContainerHeight, google.ima.ViewMode.NORMAL);
+          // Start at 0 volume for better UX.
+          adsManager.setVolume(videoRequestStartVolume);
+          adsManager.start();
+        } catch (adError) {
+          videoContent.play();
+        }
+      }
+
+      function onAdEvent(adEvent) {
+        var ad = adEvent.getAd();
+        switch (adEvent.type) {
+          case google.ima.AdEvent.Type.LOADED:
+            if (!ad.isLinear()) {
+              videoContent.play();
+              console.log(videoLogLoaded)
+            }
+            break;
+          case google.ima.AdEvent.Type.STARTED:
+            console.log(videoLogPlaying)
+            if (ad.isLinear()) {
+              intervalTimer = setInterval(
+                function() {
+                  var remainingTime = adsManager.getRemainingTime();
+                },
+                300); // every 300ms
+            }
+            break;
+          case google.ima.AdEvent.Type.COMPLETE:
+            console.log(videoLogCompleted)
+            if (ad.isLinear()) {
+              clearInterval(intervalTimer);
+            }
+          case google.ima.AdEvent.Type.SKIPPED:
+            console.log(videoLogSkipped)
+              // Skipped is also called when ad is completed, so for complete or skip = render the fallback display ad.
+            displayFallbackAd();
+            break;
+        }
+      }
+
+      function onAdError(adErrorEvent) {
+        // Handle the error logging.
+        console.log(adErrorEvent.getError());
+        console.log(videoLogErrorFallback);
+        // Do not destroy on error, as we are falling back instead.
+        //adsManager.destroy();
+        displayFallbackAd();
+      }
+
+      function onContentPauseRequested() {
+        videoContent.pause();
+        // Out of scope for this implementation.
+      }
+
+      function onContentResumeRequested() {
+        videoContent.play();
+        // Out of scope for this implementation.
+      }
+
+      // Mouse over volume stuff
+      function mouseOverPlayer(x) {
+        adsManager.setVolume(videoRequestHoverVolume);
+      }
+
+      function mouseOffPlayer(x) {
+        adsManager.setVolume(videoRequestStartVolume);
+      }
+
+      init();
+      requestAds();
+
+    </script>
+  </body>
+
+</html>
