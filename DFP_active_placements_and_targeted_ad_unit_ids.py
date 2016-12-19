@@ -1,8 +1,8 @@
-# Import appropriate modules from the client library.
+# Need this to extract all active placements and the ad units they are targeting.
+
 from googleads import dfp
 
 def main(client):
-  # Initialize appropriate service.
   placement_service = client.GetService('PlacementService', version='v201608')
   query = 'WHERE status = :status'
   values = [
@@ -12,11 +12,8 @@ def main(client):
            'value': 'ACTIVE'
        }},
   ]
-  # Create a statement to select placements.
   statement = dfp.FilterStatement(query, values)
 
-  # Retrieve a small amount of placements at a time, paging
-  # through until all placements have been retrieved.
   while True:
     response = placement_service.getPlacementsByStatement(statement.ToStatement(
     ))
@@ -29,9 +26,6 @@ def main(client):
       statement.offset += dfp.SUGGESTED_PAGE_LIMIT
     else:
       break
-
-  #print '\nNumber of results found: %s' % response['totalResultSetSize']
-
 
 if __name__ == '__main__':
   # Initialize client object.
