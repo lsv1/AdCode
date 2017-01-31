@@ -60,7 +60,6 @@ def main(client):
                     print('%s, %s, %s, %s, %s, %s, %s') % (user_check.isActive, user_check.id, user_check.name, user_check.email, user_check.roleId, user_check.roleName, team_check.teamId)
         break
 
-
 if __name__ == '__main__':
     # Initialize client object.
 
