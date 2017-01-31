@@ -23,8 +23,10 @@ def main(client):
         dfp_users = user_service.getUsersByStatement(statement.ToStatement())
         dfp_teams = team_service.getTeamsByStatement(statement.ToStatement())
         dfp_user_team_assoc = user_team_association_service.getUserTeamAssociationsByStatement(statement.ToStatement())
+
         ''' Commenting out this big block that was used for testing the whole dataset
         if 'results' in dfp_users and dfp_teams and dfp_user_team_assoc:
+
             print('Users')
             for user in dfp_users['results']:
                 # Print out some information for each user.
@@ -44,18 +46,19 @@ def main(client):
             statement.offset += dfp.SUGGESTED_PAGE_LIMIT
         else:
             break
-        '''
 
         print('Roles')
         for role in roles:
             print '%d, %s' % (role['id'], role['name'])
 
-        print('Check')
+        '''
+
+        print('isActive, id, name, email, roleId, roleName, teamId')
         for user_check in dfp_users['results']:
             for team_check in dfp_user_team_assoc['results']:
                 if team_check.userId == user_check.id:
-                    print('%s, %s, %s, %s, %s, %s') % (user_check.isActive, user_check.id, user_check.name, user_check.email, user_check.roleId, user_check.roleName)
-
+                    print('%s, %s, %s, %s, %s, %s, %s') % (user_check.isActive, user_check.id, user_check.name, user_check.email, user_check.roleId, user_check.roleName, team_check.teamId)
+        break
 
 
 if __name__ == '__main__':
