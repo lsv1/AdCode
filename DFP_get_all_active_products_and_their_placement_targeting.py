@@ -16,10 +16,13 @@ def main(client):
     # Retrieve a small amount of products at a time, paging
     # through until all products have been retrieved.
 
-    print('product.status,product.id,product.name,targetedPlacementIds')
+    print('product_status,product_id,product_name,targetedPlacementIds')
+
     with open('dfp_products.csv', 'wb') as csvfile:
-        csv_writer = csv.writer(csvfile, delimiter=',')
-        csv_writer.writerow(['product.status,product.id,product.name,targetedPlacementIds'])
+        fieldnames = ['product_status', 'product_id', 'product_name', 'targetedPlacementIds']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+
     while True:
         response = product_service.getProductsByStatement(statement.ToStatement())
         if 'results' in response:
