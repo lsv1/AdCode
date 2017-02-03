@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from googleads import dfp
-
+import csv
 
 def main(client):
     # Initialize appropriate service.
@@ -17,6 +17,9 @@ def main(client):
     # through until all products have been retrieved.
 
     print('product.status,product.id,product.name,targetedPlacementIds')
+    with open('dfp_products.csv', 'wb') as csvfile:
+        csv_writer = csv.writer(csvfile, delimiter=',')
+        csv_writer.writerow(['product.status,product.id,product.name,targetedPlacementIds'])
     while True:
         response = product_service.getProductsByStatement(statement.ToStatement())
         if 'results' in response:
@@ -25,6 +28,9 @@ def main(client):
                     for item in product.builtInTargeting.inventoryTargeting.targetedPlacementIds:
                         if product.productType == "DFP" and product.status == "ACTIVE":
                             print('%s,%d,%s,%s') % (product.status, product.id, product.name, item)
+                            with open('dfp_products.csv', 'ab') as csvfile:
+                                csv_writer = csv.writer(csvfile, delimiter=',')
+                                csv_writer.writerow([product.status, product.id, product.name, item])
                 except:
                     pass
 
