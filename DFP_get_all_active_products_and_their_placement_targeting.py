@@ -7,8 +7,7 @@ from googleads import dfp
 def main(client):
     # Initialize appropriate service.
 
-    product_service = client.GetService('ProductService',
-                                        version='v201611')
+    product_service = client.GetService('ProductService',version='v201611')
 
     # Create a statement to select products.
 
@@ -32,9 +31,6 @@ def main(client):
             statement.offset += dfp.SUGGESTED_PAGE_LIMIT
         else:
             break
-
-    print '\nNumber of results found: %s' % response['totalResultSetSize']
-
 
 if __name__ == '__main__':
     # Initialize client object.
