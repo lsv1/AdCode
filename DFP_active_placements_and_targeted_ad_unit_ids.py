@@ -23,7 +23,7 @@ def main(client):
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
-  print ' ,'.join(fieldnames)  # Stupid way to print arrays.
+  print ', '.join(fieldnames)  # Stupid way to print arrays.
 
   while True:
     dfp_placements = placement_service.getPlacementsByStatement(statement.ToStatement())
