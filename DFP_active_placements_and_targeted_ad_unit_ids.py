@@ -26,7 +26,7 @@ def main(client):
         for adunit in dfp_ad_units['results']:
           for targetedAdUnit in placement.targetedAdUnitIds:
             if adunit.id == targetedAdUnit:
-              print('%d,%s,%s' % (placement['id'], placement['name'], adunit.name))
+              print('%d,%s,%s,%s' % (placement['id'], placement['name'], adunit_id, adunit.name))
       statement.offset += dfp.SUGGESTED_PAGE_LIMIT
     else:
       break
