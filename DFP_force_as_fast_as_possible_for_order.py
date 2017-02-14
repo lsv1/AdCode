@@ -6,16 +6,16 @@ ORDER_ID = 'ORDER_ID'
 
 def main(client, order_id):
   # Initialize appropriate service.
-  line_item_service = client.GetService('LineItemService', version='v201611')
+  line_item_service = client.GetService('LineItemService', version='v201702')
 
+  # Find line items with even delivery, the new value is down in the update_line_items object.
   values = [{
       'key': 'deliveryRateType',
       'value': {
           'xsi_type': 'TextValue',
-          # Find line items with even delivery, the new value is down in the update_line_items object.
           'value': 'EVENLY'
       }
-  }, {
+  },{
       'key': 'orderId',
       'value': {
           'xsi_type': 'NumberValue',
@@ -24,6 +24,7 @@ def main(client, order_id):
   }]
 
   query = 'WHERE deliveryRateType = :deliveryRateType and orderId = :orderId'
+
   statement = dfp.FilterStatement(query, values, 500)
 
   response = line_item_service.getLineItemsByStatement(
@@ -53,6 +54,6 @@ def main(client, order_id):
     print 'No line items found to update.'
 
 if __name__ == '__main__':
-  # Initialize client object.
+
   dfp_client = dfp.DfpClient.LoadFromStorage()
   main(dfp_client, ORDER_ID)
