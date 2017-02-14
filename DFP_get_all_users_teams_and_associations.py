@@ -5,8 +5,8 @@ from googleads import dfp
 
 def main(client):
 
-    user_service = client.GetService('UserService', version='v201611')
-    user_team_association_service = client.GetService('UserTeamAssociationService',version='v201611')
+    user_service = client.GetService('UserService', version='v201702')
+    user_team_association_service = client.GetService('UserTeamAssociationService',version='v201702')
 
     statement = dfp.FilterStatement()
 
