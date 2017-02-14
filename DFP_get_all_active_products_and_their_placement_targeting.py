@@ -10,12 +10,13 @@ def main(client):
 
     statement = dfp.FilterStatement()
 
-    print('product_status,product_id,product_name,targetedPlacementIds')
 
     with open('dfp_products.csv', 'wb') as csvfile:
         fieldnames = ['product_status', 'product_id', 'product_name', 'product_rate','targetedPlacementIds']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
+
+    print ', '.join(fieldnames)  # Stupid way to print arrays.
 
     while True:
         response = product_service.getProductsByStatement(statement.ToStatement())
