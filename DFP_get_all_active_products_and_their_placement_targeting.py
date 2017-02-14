@@ -2,24 +2,18 @@
 # -*- coding: utf-8 -*-
 
 from googleads import dfp
-import csv
+import unicodecsv as csv
 
 def main(client):
-    # Initialize appropriate service.
 
-    product_service = client.GetService('ProductService',version='v201611')
-
-    # Create a statement to select products.
+    product_service = client.GetService('ProductService',version='v201702')
 
     statement = dfp.FilterStatement()
-
-    # Retrieve a small amount of products at a time, paging
-    # through until all products have been retrieved.
 
     print('product_status,product_id,product_name,targetedPlacementIds')
 
     with open('dfp_products.csv', 'wb') as csvfile:
-        fieldnames = ['product_status', 'product_id', 'product_name', 'targetedPlacementIds']
+        fieldnames = ['product_status', 'product_id', 'product_name', 'product_rate','targetedPlacementIds']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -42,7 +36,6 @@ def main(client):
             break
 
 if __name__ == '__main__':
-    # Initialize client object.
 
     dfp_client = dfp.DfpClient.LoadFromStorage()
     main(dfp_client)
