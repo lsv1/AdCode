@@ -2,7 +2,9 @@
 # _*_ coding:utf-8 _*_
 
 from googleads import dfp
-import unicodecsv as csv
+import csv
+# Unicode might spit out errors if you have none-breaking spaces in your product or inventory names, I recommend fixing this at the source instead of hackery, but whatever.
+#import unicodecsv as csv
 
 def main(client):
 
