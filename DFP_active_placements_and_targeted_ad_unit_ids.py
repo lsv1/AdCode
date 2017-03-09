@@ -13,7 +13,7 @@ def main(client):
     statement = dfp.FilterStatement()
 
     with open('dfp_placements.csv', 'wb') as csvfile:
-        fieldnames = ['placement_status', 'placement_id', 'placement_name', 'ad_unit_id']
+        fieldnames = ['placement_id', 'placement_status', 'placement_name', 'ad_unit_id']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
