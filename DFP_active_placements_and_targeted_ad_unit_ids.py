@@ -6,7 +6,6 @@
 from googleads import dfp
 import csv
 
-
 def main(client):
     placement_service = client.GetService('PlacementService', version='v201702')
 
