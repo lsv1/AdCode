@@ -79,20 +79,6 @@
       var videoRequestlinearAdSlotWidth = 640;
       var videoRequestlinearAdSlotHeight = 400;
 
-
-      // Fallback Display Ad GPT Sync Passback request
-
-      function displayFallbackAd() {
-        // Basic Data
-        path = determineAdUnit("display");
-        width = 300;
-        height = 250;
-        // GPT Render on page
-        googletag.pubads().definePassback(path, [
-          [width, height]
-        ]).setTargeting("test", "responsive").display();
-      }
-
       // Logging Messages
       var videoLogLoaded = 'Video Ad Loaded.';
       var videoLogPlaying = 'Video Ad Playing.';
@@ -107,7 +93,22 @@
       var intervalTimer;
       var playButton;
       var videoContent;
+      
+      // Fallback Display Ad GPT Sync Passback request
 
+      function displayFallbackAd() {
+        // Basic Data
+        path = determineAdUnit("display");
+        width = 300;
+        height = 250;
+        // GPT Render on page
+        googletag.pubads().definePassback(path, [
+          [width, height]
+        ]).setTargeting("test", "responsive").display();
+      }
+
+      // IMA SDK Functions
+      
       function init() {
         videoContent = document.getElementById('contentElement');
       }
