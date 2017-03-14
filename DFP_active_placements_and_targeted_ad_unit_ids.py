@@ -36,8 +36,6 @@ def main(client):
                         csv_writer.writerow([placement.id, placement.status, placement.name.encode('ascii', 'ignore'), "N/A"])
                         pass
                 statement.offset += dfp.SUGGESTED_PAGE_LIMIT
-                break
-
 
 if __name__ == '__main__':
     dfp_client = dfp.DfpClient.LoadFromStorage()
