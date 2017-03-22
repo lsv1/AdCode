@@ -1,7 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# I'm dropping all non ascii characters from product names because it's easy, this isn't great if you're a non-American DFP user.
-# You may have to consider encoding fixes if you need special characters in your product names.
+
+# DFP_get_all_active_products_placements_ad_units.py v0.2
+# This file pulls various data from the DFP Premium API.
+# Including: Products, Placements and ad Units, some of the attributes are saved to CSV for storage, then read into Panda Data Frames for joining on the defined indexs.
+# It's not pulling all product data, but that's in the works if the business chooses to use it.
+
+# Note - I'm dropping all non ascii characters from product names because it's easy, this isn't great if you're a non-American DFP user. You may have to consider encoding fixes if you need special characters in your product names.
 
 from googleads import dfp
 import csv
