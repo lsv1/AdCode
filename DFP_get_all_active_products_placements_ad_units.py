@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # DFP_get_all_active_products_placements_ad_units.py v0.2
-# This file pulls various data from the DFP Premium API.
+# This script pulls various data from the DFP Premium API using the DFP Client Library v201702
 # Including: Products, Placements and ad Units, some of the attributes are saved to CSV for storage, then read into Panda Data Frames for joining on the defined indexs.
 # It's not pulling all product data, but that's in the works if the business chooses to use it.
 
