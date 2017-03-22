@@ -6,7 +6,7 @@
 from googleads import dfp
 import csv
 import os
-import pandas as pandas
+import pandas
 
 
 def products(client):
