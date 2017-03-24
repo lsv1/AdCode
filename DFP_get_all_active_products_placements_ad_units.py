@@ -1,18 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# DFP_get_all_active_products_placements_ad_units.py v0.2
+# DFP_get_all_active_products_placements_ad_units.py
 # This script pulls various data from the DFP Premium API using the DFP Client Library v201702
-# Including: Products, Placements and ad Units, some of the attributes are saved to CSV for storage, then read into Panda Data Frames for joining on the defined indexs.
-# It's not pulling all product data, but that's in the works if the business chooses to use it.
+# Including: Products, Placements and Ad Units, some of the attributes are saved to CSV for storage, then read into Panda Data Frames for joining/merging and then outputs to CSV for the business user.
 
-# Note - I'm dropping all non ascii characters from product names because it's easy, this isn't great if you're a non-American DFP user. You may have to consider encoding fixes if you need special characters in your product names.
+# Note - I'm dropping all non ascii characters from product names because it's easy and my business folks don't care.
 
 from googleads import dfp
 import csv
 import os
 import pandas
-import winsound # This script takes a while to run on my network, so I want to know when it's done, usually doesn't work when I have Drum and Bass blasting though.
+import winsound  # This script takes a while to run on my network, so I want to know when it's done, usually doesn't work when I have Drum and Bass blasting though.
+
 
 def products(client):
     product_service = client.GetService('ProductService', version='v201702')
@@ -186,15 +186,16 @@ def outputs():
                  'ad_unit_hasChildren': row['ad_unit_hasChildren'],
                  'ad_unit_parentId': row['ad_unit_parentId']})
 
-    # Create a data frame, keys are used as column headers.
-    # Dict items with the same key are entered into the same respective column.
     df1 = pandas.DataFrame(dfp_products_data)
     df2 = pandas.DataFrame(dfp_placements_data)
     df3 = pandas.DataFrame(dfp_ad_units_data)
 
-    df_products_and_placements = df1.merge(df2, left_index='placement_id', right_index='placement_id', how='inner')
-    df_products_and_placements_and_ad_units = df_products_and_placements.merge(df3, left_index='ad_unit_id',
-                                                                               right_index='ad_unit_id', how='left')
+    # Products => Placement join, works as expected.
+    df_products_and_placements = df1.merge(df2)
+
+    # Products => Placement => Ad Unit join, does not work.
+    # df_products_and_placements_and_ad_units = df2.merge(df3)
+
     try:
         os.remove('df_products.csv')
         os.remove('df_placements.csv')
@@ -204,12 +205,14 @@ def outputs():
     except:
         pass
 
+    # Sometimes good to qa the dataframe
     # df1.to_csv('df_products.csv', sep=',', index=False)
     # df2.to_csv('df_placements.csv', sep=',', index=False)
     # df3.to_csv('df_ad_units.csv', sep=',', index=False)
 
     df_products_and_placements.to_csv('df_products_and_placements.csv', sep=',', index=False)
-    df_products_and_placements_and_ad_units.to_csv('df_products_and_placements_and_ad_units.csv', sep=',', index=False)
+
+    # df_products_and_placements_and_ad_units.to_csv('df_products_and_placements_and_ad_units.csv', sep=',', index=False)
 
 
 dfp_client = dfp.DfpClient.LoadFromStorage()
@@ -217,4 +220,4 @@ products(dfp_client)
 placements(dfp_client)
 ad_units(dfp_client)
 outputs()
-winsound.Beep(400,100) # This script takes a while to run on my network, so I want to know when it's done, usually doesn't work when I have Drum and Bass blasting though.
+winsound.Beep(400,100) # This script takes a while to run on my network.
