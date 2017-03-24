@@ -32,7 +32,7 @@ def products(client):
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-    print ', '.join(fieldnames)  # Stupid way to print this IMO. Seems unpythonic.
+    print ', '.join(fieldnames)  # Strange way to print this, at least for my newb brain. Seems unpythonic.
 
     while True:
         response = product_service.getProductsByStatement(statement.ToStatement())
@@ -76,7 +76,7 @@ def placements(client):
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-    print ', '.join(fieldnames)  # Stupid way to print this IMO. Seems unpythonic.
+    print ', '.join(fieldnames)  # Strange way to print this, at least for my newb brain. Seems unpythonic.
 
     while True:
         response = placement_service.getPlacementsByStatement(statement.ToStatement())
@@ -123,7 +123,7 @@ def ad_units(client):
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-    print ', '.join(fieldnames)  # Stupid way to print this IMO. Seems unpythonic.
+    print ', '.join(fieldnames)  # Strange way to print this, at least for my newb brain. Seems unpythonic.
 
     while True:
         response = ad_unit_service.getAdUnitsByStatement(statement.ToStatement())
