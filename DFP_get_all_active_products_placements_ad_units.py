@@ -11,7 +11,8 @@ from googleads import dfp
 import csv
 import os
 import pandas
-import winsound  # This script takes a while to run on my network, so I want to know when it's done, usually doesn't work when I have Drum and Bass blasting though.
+import \
+    winsound  # This script takes a while to run on my network, so I want to know when it's done, usually doesn't work when I have Drum and Bass blasting though.
 
 
 def products(client):
@@ -220,4 +221,4 @@ products(dfp_client)
 placements(dfp_client)
 ad_units(dfp_client)
 outputs()
-winsound.Beep(400,100) # This script takes a while to run on my network.
+winsound.Beep(400, 100)  # This script takes a while to run on my network.
