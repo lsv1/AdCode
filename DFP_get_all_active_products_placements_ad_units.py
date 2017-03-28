@@ -198,11 +198,7 @@ def outputs():
     # df_products_and_placements_and_ad_units = df2.merge(df3)
 
     try:
-        os.remove('df_products.csv')
-        os.remove('df_placements.csv')
-        os.remove('df_ad_units.csv')
         os.remove('df_products_and_placements.csv')
-        os.remove('df_products_and_placements_and_ad_units.csv')
     except:
         pass
 
