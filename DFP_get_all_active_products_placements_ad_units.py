@@ -192,29 +192,27 @@ def outputs():
     df3 = pandas.DataFrame(dfp_ad_units_data)
 
     # Products => Placement join, works as expected.
-    df_products_and_placements = df1.merge(df2)
+    output = df1.merge(df2)
 
-    # Products => Placement => Ad Unit join, does not work.
-    # df_products_and_placements_and_ad_units = df2.merge(df3)
+    ad_unit_names = dict(zip(df3['ad_unit_id'], df3['ad_unit_name']))
+    ad_unit_parentIds = dict(zip(df3['ad_unit_id'], df3['ad_unit_parentId']))
+
+    # I don't know how to chain dictionary lookups :D
+    output['ad_unit_name'] = output['ad_unit_id'].map(ad_unit_names)
+    output['ad_unit_parent_id'] = output['ad_unit_id'].map(ad_unit_parentIds)
+    output['ad_unit_parent_name'] = output['ad_unit_id'].map(ad_unit_names)
 
     try:
-        os.remove('df_products_and_placements.csv')
+        os.remove('df_products_placements_ad_units.csv')
     except:
         pass
 
-    # Sometimes good to qa the dataframe
-    # df1.to_csv('df_products.csv', sep=',', index=False)
-    # df2.to_csv('df_placements.csv', sep=',', index=False)
-    # df3.to_csv('df_ad_units.csv', sep=',', index=False)
-
-    df_products_and_placements.to_csv('df_products_and_placements.csv', sep=',', index=False)
-
-    # df_products_and_placements_and_ad_units.to_csv('df_products_and_placements_and_ad_units.csv', sep=',', index=False)
+    output.to_csv('df_products_placements_ad_units.csv', sep=',', index=False)
 
 
 dfp_client = dfp.DfpClient.LoadFromStorage()
-products(dfp_client)
-placements(dfp_client)
-ad_units(dfp_client)
+# products(dfp_client)
+# placements(dfp_client)
+# ad_units(dfp_client)
 outputs()
 winsound.Beep(400, 100)  # This script takes a while to run on my network.
