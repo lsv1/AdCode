@@ -213,8 +213,8 @@ def outputs():
 
 
 dfp_client = dfp.DfpClient.LoadFromStorage()
-# products(dfp_client)
-# placements(dfp_client)
-# ad_units(dfp_client)
+products(dfp_client)
+placements(dfp_client)
+ad_units(dfp_client)
 outputs()
 winsound.Beep(400, 100)  # This script takes a while to run on my network.
