@@ -191,13 +191,15 @@ def outputs():
     df2 = pandas.DataFrame(dfp_placements_data)
     df3 = pandas.DataFrame(dfp_ad_units_data)
 
-    # Products => Placement join, works as expected.
+    # Products => Placement general join.
     output = df1.merge(df2)
 
     ad_unit_names = dict(zip(df3['ad_unit_id'], df3['ad_unit_name']))
+    ad_unit_statuses = dict(zip(df3['ad_unit_id'], df3['ad_unit_status']))
     ad_unit_parentIds = dict(zip(df3['ad_unit_id'], df3['ad_unit_parentId']))
 
-    # I don't know how to chain dictionary lookups :D
+    # I don't know how to chain dictionary lookups yet!
+    output['ad_unit_status'] = output['ad_unit_id'].map(ad_unit_statuses)
     output['ad_unit_name'] = output['ad_unit_id'].map(ad_unit_names)
     output['ad_unit_parent_id'] = output['ad_unit_id'].map(ad_unit_parentIds)
     output['ad_unit_parent_name'] = output['ad_unit_id'].map(ad_unit_names)
