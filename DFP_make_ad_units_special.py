@@ -28,12 +28,10 @@ def main(client, AD_UNITS_TO_UPDATE):
                 updated_ad_units.append(ad_unit)
 
             ad_units = inventory_service.updateAdUnits(updated_ad_units)
+
             for ad_unit in ad_units:
-                ad_unit_sizes = ['{%s x %s}' % (size['size']['width'],
-                                                size['size']['height'])
-                                 for size in ad_unit['adUnitSizes']]
-                print ('Ad unit with ID \'%s\', name \'%s\', and sizes [%s] was updated' % (
-                ad_unit['id'], ad_unit['name'], ','.join(ad_unit_sizes)))
+                print ('Ad unit with ID \'%s\', name \'%s\' was updated' % (
+                ad_unit['id'], ad_unit['name']))
 
 
 if __name__ == '__main__':
