@@ -24,6 +24,7 @@ def main(client, AD_UNITS_TO_UPDATE):
         if 'results' in response:
             updated_ad_units = []
             for ad_unit in response['results']:
+                # Special Ad Unit = Yes
                 ad_unit['explicitlyTargeted'] = True
                 updated_ad_units.append(ad_unit)
 
