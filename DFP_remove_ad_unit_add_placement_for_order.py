@@ -31,7 +31,7 @@ def main(client, order_id):
         for line_item in response['results']:
             if not line_item['isArchived']:
                 del line_item['targeting']['inventoryTargeting'].targetedAdUnits
-                line_item['targeting']['inventoryTargeting']['targetedPlacementIds'] = PLACEMENT_TO_TARGET
+                line_item['targeting']['inventoryTargeting']['targetedPlacementIds'] = PLACEMENTS_TO_TARGET
                 updated_line_items.append(line_item)
 
         line_items = line_item_service.updateLineItems(updated_line_items)
