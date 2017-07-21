@@ -4,7 +4,8 @@ from googleads import dfp
 # This script appends third party creative snippets to a text file.
 # This is useful to audit many post-bid creatives.
 
-# Paste your third party creative IDs in the below array and execute. The output filename is creative_output.txt and will be written in the run directory of this script.
+# Paste your third party creative IDs in the below array and execute.
+# The output filename is creative_output.txt and will be written in the run directory of this script.
 CREATIVE_IDS = ['1234', '12345', '123456']
 
 
