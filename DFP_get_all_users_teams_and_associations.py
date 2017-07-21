@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Changes incoming, moving this to use Pandas to join user data together and output a single audit file. Should be done in April
+# Changes incoming, moving this to use Pandas to join user data together and output a single audit file.
+# Should be done in whenever I get time lol.
 
 from googleads import dfp
 
