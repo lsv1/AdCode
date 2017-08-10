@@ -46,5 +46,5 @@ def scrape_domains(input_domains):
             pass
 
 
-download_domains()
+download_domains(domain_source)
 scrape_domains(domains)
