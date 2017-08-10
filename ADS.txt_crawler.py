@@ -13,7 +13,7 @@ domains = "top_500_domains.csv"
 output_file = "ads.txt"
 
 
-def download_domains():
+def download_domains(domain_source):
     r = requests.get(domain_source)
     with open(domains, "wb") as code:
         code.write(r.content)
