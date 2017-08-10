@@ -42,7 +42,7 @@ def scrape_domains(input_domains):
                                 f.write(chunk)
                                 f.write("\n")
         except:
-            print "Timed out scraping " + r.url
+            print "Failed or timed out scraping " + r.url
             pass
 
 
