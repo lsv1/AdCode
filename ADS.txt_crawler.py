@@ -1,9 +1,12 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import csv
 import requests
 import eventlet
-eventlet.sleep() # Fix for https://github.com/eventlet/eventlet/issues/401 in Debian
+from bs4 import BeautifulSoup
+
+eventlet.sleep()  # Fix for https://github.com/eventlet/eventlet/issues/401 in Debian
 from collections import defaultdict
 
 eventlet.monkey_patch()
@@ -34,20 +37,24 @@ def scrape_domains(input_domains):
                 r = requests.get(("http://" + site + "ads.txt"), allow_redirects=1)
                 print "Scraping - " + r.url
                 if (r.status_code == 200) and (r.headers['content-type'] == 'text/plain'):
-                    with open(output_file, 'ab') as f:
-                        f.write(r.url)
-                        f.write("\n")
-                        print("Found ads.txt on - " + r.url)
-                        for chunk in r.iter_content(chunk_size=1024):
-                            if chunk:  # filter out keep-alive new chunks
-                                f.write(chunk)
-                                f.write("\n")
-                                print chunk
+                    if bool(BeautifulSoup(r.content, "html.parser").find()) == False:
+                        with open(output_file, 'ab') as f:
+                            f.write(r.url)
+                            f.write("\n")
+                            print("Found ads.txt on - " + r.url)
+                            for chunk in r.iter_content(chunk_size=4096):
+                                if chunk:  # filter out keep-alive new chunks
+                                    f.write(chunk)
+                                    f.write("\n")
+                                    print chunk
+                            f.write("\n")
+                            print ("\n")
                 else:
                     print "Nothing found on - " + r.url
         except:
             print "Failed or timed out scraping - " + r.url
             pass
+
 
 download_domains(domain_source)
 scrape_domains(domains)
