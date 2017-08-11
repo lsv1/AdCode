@@ -32,19 +32,22 @@ def scrape_domains(input_domains):
         try:
             with eventlet.Timeout(10):
                 r = requests.get(("http://" + site + "ads.txt"), allow_redirects=1)
-                print "Scraped " + r.url
+                print "Scraping - " + r.url
                 if (r.status_code == 200) and (r.headers['content-type'] == 'text/plain'):
                     with open(output_file, 'ab') as f:
                         f.write(r.url)
                         f.write("\n")
+                        print("Found ads.txt on - " + r.url)
                         for chunk in r.iter_content(chunk_size=1024):
                             if chunk:  # filter out keep-alive new chunks
                                 f.write(chunk)
                                 f.write("\n")
+                                print chunk
+                else:
+                    print "Nothing found on - " + r.url
         except:
-            print "Failed or timed out scraping " + r.url
+            print "Failed or timed out scraping - " + r.url
             pass
-
 
 download_domains(domain_source)
 scrape_domains(domains)
