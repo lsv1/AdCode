@@ -25,15 +25,16 @@ def scrape_domains(input_domains):
     }
 
     columns = defaultdict(list)
+
     with open(input_domains) as f:
         reader = csv.DictReader(f)
         for row in reader:
             for (k, v) in row.items():
                 columns[k].append(v)
 
-    for site in columns["URL"]:
-        with eventlet.Timeout(3):
-            with open(output_file, "a") as f:
+    with open(output_file, "a") as f:
+        for site in columns["URL"]:
+            with eventlet.Timeout(3):
                 try:
                     r = requests.get(("http://" + site + "/ads.txt"), allow_redirects=1, headers=adstxt_headers,
                                      timeout=3)
