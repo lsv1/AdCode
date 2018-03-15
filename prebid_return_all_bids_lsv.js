@@ -13,6 +13,7 @@ for (var adunit in responses) {
 				'time': b.timeToRespond,
 				'cpm': b.cpm,
 				'msg': b.statusMessage,
+				'status' : b.status,
 				'size': b.width + 'x' + b.height
 			});
 		}
@@ -40,7 +41,10 @@ for (var i = 0; i < bids.length; i++) {
 		'adId': b.adId,
 		'bidder': b.bidder,
 		'time': b.timeToRespond,
-		'cpm': b.cpm
+		'cpm': b.cpm,
+		'msg': "Bid Won",
+		'status' : b.status,
+		'size': b.width + 'x' + b.height
 	});
 }
 if (output.length) {
