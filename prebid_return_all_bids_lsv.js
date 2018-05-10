@@ -13,7 +13,7 @@ for (var adunit in responses) {
 				'time': b.timeToRespond,
 				'cpm': b.cpm,
 				'msg': b.statusMessage,
-				'status' : b.status,
+				'status': b.status,
 				'size': b.width + 'x' + b.height
 			});
 		}
@@ -43,8 +43,9 @@ for (var i = 0; i < bids.length; i++) {
 		'time': b.timeToRespond,
 		'cpm': b.cpm,
 		'msg': "Bid Won",
-		'status' : b.status,
-		'size': b.width + 'x' + b.height
+		'status': b.status,
+		'size': b.width + 'x' + b.height,
+		'adUrl': b.adUrl
 	});
 }
 if (output.length) {
