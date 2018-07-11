@@ -1,9 +1,9 @@
 # Overview
 
 ```
-Module Name:  DistrictM Bid Adapter
-Module Type:  Bidder Adapter
-Maintainer:	  steve@districtm.net
+Module Name: DistrictM Bid Adapter
+Module Type: Bidder Adapter
+Maintainer:  steve@districtm.net
 ```
 
 # Description
