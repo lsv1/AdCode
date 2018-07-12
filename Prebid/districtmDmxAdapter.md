@@ -21,10 +21,11 @@ The `districtmDmxAdapter` module allows publishers to include DMX Exchange deman
 
 ## Bidder Parameters
 
-| Key | Scope | Type | Description ---
+| Key | Scope | Type | Description
 | --- | --- | --- | ---
 | dmxid | Mandatory | Integer | Unique identifier of the placement, dmxid can be obtained in the district m Boost platform.
 | memberid | Mandatory | Integer | Unique identifier for your account, memberid can be obtained in the district m Boost platform.
+| |
 
 # Ad Unit Configuration Example
 
