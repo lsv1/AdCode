@@ -26,6 +26,11 @@ The `districtmDmxAdapter` module allows publishers to include DMX Exchange deman
 | dmxid | Mandatory | Integer | Unique identifier of the placement, dmxid can be obtained in the district m Boost platform.
 | memberid | Mandatory | Integer | Unique identifier for your account, memberid can be obtained in the district m Boost platform.
 
+| Key | Scope | Type | Description
+| --- | --- | --- | ---
+| siteId | Required | String | An IX-specific identifier that is associated with a specific size on this ad unit. This is similar to a placement ID or an ad unit ID that some other modules have. Examples: `'3723'`, `'6482'`, `'3639'`
+| size | Required | Number[] | The single size associated with the site ID. It should be one of the sizes listed in the ad unit under `adUnits[].sizes` or `adUnits[].mediaTypes.banner.sizes`. Examples: `[300, 250]`, `[300, 600]`, `[728, 90]`
+
 # Ad Unit Configuration Example
 
 ```javascript
@@ -114,4 +119,4 @@ Our demand and adapter supports multiple sizes per placement, as such a single d
 
 ###### 2. Implementation Checking
 
-Once the bidder is live in your Prebid configuration you may confirm it is making requests to our end point by looking for requests to `https://dmx.districtm.io/b/v1`.
+Once the bidder is live in your Prebid configuration you may confirm it is making requests to our end point by looking for requests to `https://dmx.districtm.io/b/v1`. 
