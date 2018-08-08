@@ -43,7 +43,7 @@ for (var i = 0; i < bids.length; i++) {
 		'cpm': b.cpm,
 		'msg': "Bid Won",
 		'size': b.width + 'x' + b.height,
-		'status': b.status, // Look for "rendered" to show what won mediation.
+		'status': b.status, // "rendered" means the ad is on page and won mediation. Great for debugging!
 		'statusMessage': b.statusMessage
 	});
 }
