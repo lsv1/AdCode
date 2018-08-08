@@ -1,5 +1,3 @@
-// Does not work with Prebid 1.13+, but will be revamped to support Prebid 1.13+.
-
 console.log("Printing PrebidJS Bid Responses");
 var responses = pbjs.getBidResponses();
 var output = [];
@@ -15,7 +13,6 @@ for (var adunit in responses) {
 				'time': b.timeToRespond,
 				'cpm': b.cpm,
 				'msg': b.statusMessage,
-				'status': b.status,
 				'size': b.width + 'x' + b.height
 			});
 		}
@@ -45,9 +42,9 @@ for (var i = 0; i < bids.length; i++) {
 		'time': b.timeToRespond,
 		'cpm': b.cpm,
 		'msg': "Bid Won",
-		'status': b.status,
 		'size': b.width + 'x' + b.height,
-		'adUrl': b.adUrl
+		'status': b.status, // Look for "rendered" to show what won mediation.
+		'statusMessage': b.statusMessage
 	});
 }
 if (output.length) {
