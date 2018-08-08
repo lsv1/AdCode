@@ -1,3 +1,7 @@
+// This is a consolidationg and minor edit of the Prebid troubleshooting info here - http://prebid.org/dev-docs/troubleshooting-tips.html#see-all-bids-in-the-console
+// It's helped in doing ad tech work both as a publisher and now at an SSP.
+// Feel free to contribute as you wish.
+
 console.log("Printing PrebidJS Bid Responses");
 var responses = pbjs.getBidResponses();
 var output = [];
