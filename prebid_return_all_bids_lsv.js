@@ -16,9 +16,9 @@ for (var adunit in responses) {
 				'bidder': b.bidder,
 				'time': b.timeToRespond,
 				'cpm': b.cpm,
-				'statusMessage': b.statusMessage,
 				'size': b.width + 'x' + b.height,
-				'mediaType': b.mediaType
+				'mediaType': b.mediaType,
+				'statusMessage': b.statusMessage
 			});
 		}
 	}
