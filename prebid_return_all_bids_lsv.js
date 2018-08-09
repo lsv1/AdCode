@@ -16,8 +16,9 @@ for (var adunit in responses) {
 				'bidder': b.bidder,
 				'time': b.timeToRespond,
 				'cpm': b.cpm,
-				'msg': b.statusMessage,
-				'size': b.width + 'x' + b.height
+				'statusMessage': b.statusMessage,
+				'size': b.width + 'x' + b.height,
+				'mediaType': b.mediaType
 			});
 		}
 	}
@@ -47,6 +48,7 @@ for (var i = 0; i < bids.length; i++) {
 		'cpm': b.cpm,
 		'msg': "Bid Won",
 		'size': b.width + 'x' + b.height,
+		'mediaType': b.mediaType,
 		'status': b.status, // "rendered" means the ad is on page and won mediation. Great for debugging!
 		'statusMessage': b.statusMessage
 	});
