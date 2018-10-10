@@ -1,56 +1,68 @@
 #!/usr/bin/env python
 
-# Test script for the 201808 API.
+# This script will add key-value targeting to existing targeting, this is probably most useful for publishers which have added Prebid (or Header Bidding) line items in their AdManager and at a later date need to globally add or exclude 
 
 from googleads import ad_manager
-import pprint
 
-LINE_ITEM_ID = 'LINE_ITEM_ID'
-
+ORDER_ID = 'ORDER_ID'
 KEY_ID1 = 'KEY_ID'
 VALUE_ID1 = 'VALUE_ID'
+OPERATOR = 'IS_NOT'  # Taken from here, but check the API docs for the real value. https://support.google.com/admanager/answer/177381?hl=en
 
 
-def main(client, line_item_id, key_id1, value_id1):
+def main(client, order_id, key_id1, value_id1, operator):
     line_item_service = client.GetService('LineItemService', version='v201808')
 
-    custom_criteria1 = {
-        'xsi_type': 'CustomCriteria',
-        'keyId': key_id1,
-        'valueIds': [value_id1],
-        'operator': 'IS_NOT'
-    }
-
-    sub_set = {
-        'xsi_type': 'CustomCriteriaSet',
-        'logicalOperator': 'AND',
-        'children': [custom_criteria1]
-    }
-
     statement = (ad_manager.StatementBuilder()
-                 .Where('id = :lineItemId')
-                 .WithBindVariable('lineItemId', long(line_item_id))
-                 .Limit(1))
+                 .Where(('orderId = :orderId'))
+                 .WithBindVariable('orderId', long(order_id))
+                 .Limit(500))
 
-    line_item = line_item_service.getLineItemsByStatement(
-        statement.ToStatement())['results'][0]
-    top_set = {
-        'xsi_type': 'CustomCriteriaSet',
-        'logicalOperator': 'AND',
-        'children': [line_item['targeting']['customTargeting'], sub_set]
-    }
-    line_item['targeting']['customTargeting'] = top_set
+    response = line_item_service.getLineItemsByStatement(statement.ToStatement())
 
-    line_item = line_item_service.updateLineItems([line_item])[0]
+    if 'results' in response and len(response['results']):
+        for line_item in response['results']:
+            line_item_service = client.GetService('LineItemService', version='v201808')
 
-    if line_item:
-        print ('Line item with id "%s" updated with custom criteria targeting:'
-               % line_item['id'])
-        pprint.pprint(line_item['targeting']['customTargeting'])
-    else:
-        print ('No line items were updated.')
+            custom_criteria = {
+                'xsi_type': 'CustomCriteria',
+                'keyId': key_id1,
+                'valueIds': [value_id1],
+                'operator': operator
+            }
+
+            sub_set = {
+                'xsi_type': 'CustomCriteriaSet',
+                'logicalOperator': 'AND',
+                'children': [custom_criteria]
+            }
+
+            statement = (ad_manager.StatementBuilder()
+                         .Where('id = :lineItemId')
+                         .WithBindVariable('lineItemId', long(line_item['id']))
+                         .Limit(1))
+
+            line_item = line_item_service.getLineItemsByStatement(
+                statement.ToStatement())['results'][0]
+            top_set = {
+                'xsi_type': 'CustomCriteriaSet',
+                'logicalOperator': 'AND',
+                'children': [line_item['targeting']['customTargeting'], sub_set]
+            }
+            line_item['targeting']['customTargeting'] = top_set
+
+            line_item = line_item_service.updateLineItems([line_item])[0]
+
+            if line_item:
+                print ('Line item with id "%s" updated with custom criteria targeting.'
+                       % line_item['id'])
+            else:
+                print ('No line items were updated.')
+
+        else:
+            print('No line items found.')
 
 
 if __name__ == '__main__':
     ad_manager_client = ad_manager.AdManagerClient.LoadFromStorage()
-    main(ad_manager_client, LINE_ITEM_ID, KEY_ID1, VALUE_ID1)
+    main(ad_manager_client, ORDER_ID, KEY_ID1, VALUE_ID1, OPERATOR)
