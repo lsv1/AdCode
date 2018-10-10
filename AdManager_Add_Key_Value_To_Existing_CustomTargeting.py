@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # This script will add key-value targeting to existing targeting.
-# This is probably most useful for publishers which have added Prebid (or Header Bidding) line items in their AdManager and at a later date need to globally add or exclude key-values.
+# This is probably most useful for publishers which have pushed Prebid (or Header Bidding) line items to AdManager and at a later date need to globally add or exclude key-values.
 
 from googleads import ad_manager
 
