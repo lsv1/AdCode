@@ -15,6 +15,7 @@ for (var adunit in responses) {
 				'adId': b.adId,
 				'bidder': b.bidder,
 				'time': b.timeToRespond,
+				'ttl': b.ttl,
 				'cpm': b.cpm,
 				'size': b.width + 'x' + b.height,
 				'mediaType': b.mediaType,
